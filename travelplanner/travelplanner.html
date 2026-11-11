@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Travel Planner App</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="travelplanner.css">
+
+</head>
+<body>
+
+<div class="container-fluid bg-secondary text-white text-right px-0">
+  <div class="container-fluid text-right px-0">
+    <button type="button" class="btn moe-kopce text-white active" style="width:120px;" id="btn-destinations" onclick="PrikaziHome()">Destinations</button>
+    <button type="button" class="btn moe-kopce text-white" style="width:120px;" id="btn-blog" onclick="PrikaziBlog()">Blog</button>
+    <button type="button" class="btn moe-kopce text-white" style="width:120px;" id="btn-review" onclick="PrikaziReview()">Review</button>
+    <button type="button" class="btn moe-kopce text-white" style="width:120px;" id="btn-signup" onclick="Otvori('loginCard')">Sign up</button>
+  </div>
+</div>
+
+<div class="container-fluid p-3 bg-secondary text-white text-center py-5" id="Home">
+  <h1>Plan your perfect vacation</h1>
+</div>
+
+<div class="container py-4" id="Destinations">
+  <div class="form-inline mb-3">
+    <label class="mr-2">Category:</label>
+    <select id="filterCategory" class="form-control mr-3" onchange="Prikazi()">
+      <option value="all">All</option>
+      <option>City</option>
+      <option>Beach</option>
+      <option>Nature</option>
+    </select>
+    <label class="mr-3">Max budget (€):</label>
+    <input type="number" id="filterBudget" class="form-control mr-3" style="width:120px;" onchange="Prikazi()">
+    <button class="btn btn-secondary" onclick="Otvori('AddDestination')">Add destination</button>
+  </div>
+
+  <div class="row" id="cityGrid"></div>
+</div>
+
+<div class="container-fluid p-3 bg-secondary text-white text-center py-5 d-none" id="BlogTitle">
+  <h1>Blog</h1>
+</div>
+<div class="container py-4 d-none" id="BlogList">
+  <h4>10 things you must see in Paris</h4>
+  <ol>
+    <li>Eiffel Tower</li>
+    <li>Louvre Museum</li>
+    <li>Notre-Dame</li>
+    <li>Montmartre</li>
+    <li>Seine river cruise</li>
+    <li>Musée d'Orsay</li>
+    <li>Arc de Triomphe</li>
+    <li>Luxembourg Gardens</li>
+    <li>Latin Quarter</li>
+    <li>Versailles</li>
+  </ol>
+  <h4>10 things you must see in Rome</h4>
+  <ol>
+    <li>Colosseum</li>
+    <li>Roman Forum</li>
+    <li>Pantheon</li>
+    <li>Trevi Fountain</li>
+    <li>Spanish Steps</li>
+    <li>Vatican Museums</li>
+    <li>St. Peter's Basilica</li>
+    <li>Piazza Navona</li>
+    <li>Trastevere</li>
+    <li>Villa Borghese</li>
+  </ol>
+</div>
+
+<div class="container-fluid p-3 bg-secondary text-white text-center py-5 d-none" id="ReviewTitle">
+  <h1>Leave us a review!</h1>
+</div>
+<div class="container bg-light d-none py-5 text-center" id="ReviewForm">
+  <form class="text-left d-inline-block" onsubmit="return Isprati()">
+    <p><label>Name: <input name="name" type="text" size="25" placeholder="Ime"></label></p>
+    <p><label>Comments:<br><textarea name="comments" rows="3" cols="30" placeholder="komentar"></textarea></label></p>
+    <p><label>E-mail Address: <input name="email" type="email" size="25" placeholder="vasiotmail@gmail.com" required></label></p>
+    <p>
+      <strong>How did you find us?</strong><br>
+      <label><input type="radio" name="source" checked> Friends</label>
+      <label><input type="radio" name="source"> Internet</label>
+    </p>
+    <p>
+      <strong>Rate our site:</strong>
+      <select name="rating">
+        <option selected>5</option>
+        <option>4</option>
+        <option>3</option>
+        <option>2</option>
+        <option>1</option>
+      </select>
+    </p>
+    <p><input type="submit" value="Submit" class="btn btn-light"></p>
+  </form>
+</div>
+
+<footer class="container-fluid bg-secondary text-white text-center py-3 mt-4">
+  Travel Planner Project 2026
+</footer>
+
+<div class="card popup-card wide d-none" id="galleryCard">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0" id="galTitle"></h5>
+    <button type="button" class="close" onclick="Zatvori('galleryCard')">&times;</button>
+  </div>
+  <div class="card-body">
+    <div class="row gal" id="galImages"></div>
+    <button class="btn btn-success btn-sm" onclick="Glasaj('likes')">Like <span id="likeCount">0</span></button>
+    <button class="btn btn-danger btn-sm" onclick="Glasaj('dislikes')">Dislike <span id="dislikeCount">0</span></button>
+    <hr>
+    <div id="commentList"></div>
+    <input class="form-control mb-2" id="comment" placeholder="Write a comment">
+    <button class="btn btn-secondary btn-sm" onclick="DodadiKomentar()">Post</button>
+  </div>
+</div>
+
+<div class="card popup-card d-none" id="AddDestination">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Add destination</h5>
+    <button type="button" class="close" onclick="Zatvori('AddDestination')">&times;</button>
+  </div>
+  <div class="card-body">
+    <input class="form-control mb-2" id="aCity" placeholder="City">
+    <select class="form-control mb-2" id="aCategory"><option>City</option><option>Beach</option><option>Nature</option></select>
+    <input class="form-control mb-2" id="Flight" type="number" placeholder="Flight (€)">
+    <input class="form-control mb-2" id="Hotel" type="number" placeholder="Hotel per night (€)">
+    <input class="form-control mb-2" id="Daily" type="number" placeholder="Daily expenses (€)">
+    <button class="btn btn-secondary" onclick="DodadiDestinacija()">Add</button>
+  </div>
+</div>
+
+<div class="card popup-card d-none" id="loginCard">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Sign up / Log in</h5>
+    <button type="button" class="close" onclick="Zatvori('loginCard')">&times;</button>
+  </div>
+  <div class="card-body">
+    <input class="form-control mb-2" id="username" placeholder="Name">
+    <input class="form-control mb-2" id="password" type="password" placeholder="Password">
+    <button class="btn btn-secondary" onclick="Najava()">OK</button>
+  </div>
+</div>
+
+<script src="travelplanner.js"></script>
+</body>
+</html>
